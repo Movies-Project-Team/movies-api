@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->text('title')->nullable();
-            $table->float('IMDb');
-            $table->text('title_original')->nullable();
-            $table->string('type')->nullable();
-            $table->dateTime('time')->nullable();
-            $table->integer('esp_total')->nullable();
-            $table->integer('esp_current')->nullable();
-            $table->text('slug')->nullable();
-            $table->text('description')->nullable();
-            $table->text('produce_by');
-            $table->dateTime('release_year')->nullable();
-            $table->text('thumbnail')->nullable();
+            $table->text('title');
+            $table->float('IMDb')->nullable();
+            $table->text('title_original');
+            $table->string('type');
+            $table->dateTime('time');
+            $table->integer('esp_total');
+            $table->integer('esp_current');
+            $table->text('slug');
+            $table->text('description');
+            $table->text('produce_by')->nullable();
+            $table->dateTime('release_year');
+            $table->text('thumbnail');
             $table->timestamps();
         });
     }

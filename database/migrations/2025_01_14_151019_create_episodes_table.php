@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('episodes', function (Blueprint $table) {
             $table->id();
             $table->foreign('movie_id')->references('id')->on('movies');
-            $table->integer('season');
-            $table->text('title')->nullable();
-            $table->integer('episode')->nullable();
-            $table->text('description')->nullable();
-            $table->dateTime('release_date')->nullable();
-            $table->text('slug')->nullable();
-            $table->integer('duration')->nullable();
+            $table->integer('season')->nullable();
+            $table->text('title');
+            $table->integer('episode');
+            $table->text('description');
+            $table->dateTime('release_date');
+            $table->text('slug');
+            $table->integer('duration');
             $table->timestamps();
         });
     }

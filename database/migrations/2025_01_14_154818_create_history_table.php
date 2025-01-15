@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreign('movie_id')->references('id')->on('movies');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->dateTime('date_watch')->nullable();
+            $table->dateTime('date_watch');
             $table->timestamps();
         });
     }
