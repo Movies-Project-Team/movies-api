@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('title');
             $table->float('IMDb')->nullable();
             $table->text('title_original');
+            $table->text('trailer_url');
             $table->string('type');
             $table->dateTime('time');
             $table->integer('esp_total');
