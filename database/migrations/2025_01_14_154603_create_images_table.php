@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->text('alt');
-            $table->text('url');
+            $table->text('alt')->nullable();
+            $table->text('url')->nullable();
             $table->timestamps();
         });
     }
