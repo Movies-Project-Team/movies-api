@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('movie_language', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('movie_id');
+            $table->unsignedBigInteger('language_id');
             $table->foreign('movie_id')->references('id')->on('movies');
             $table->foreign('language_id')->references('id')->on('languages');
             $table->timestamps();

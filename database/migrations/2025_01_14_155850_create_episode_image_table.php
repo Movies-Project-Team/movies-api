@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('episode_image', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('movie_id');
+            $table->unsignedBigInteger('episode_id');
             $table->foreign('movie_id')->references('id')->on('movies');
             $table->foreign('episode_id')->references('id')->on('episodes');
             $table->timestamps();
