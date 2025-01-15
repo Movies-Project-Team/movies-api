@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('episodes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('movie_id');
             $table->foreign('movie_id')->references('id')->on('movies');
             $table->integer('season')->nullable();
             $table->text('title');
             $table->integer('episode');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->dateTime('release_date');
             $table->text('slug');
             $table->integer('duration');

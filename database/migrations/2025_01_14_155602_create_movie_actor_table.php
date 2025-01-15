@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('movie_actor', function (Blueprint $table) {
             $table->id();
-            $table->foreign('movie_id')->references('id')->on('movies');
-            $table->foreign('actor_id')->references('id')->on('actors');
+            $table->unsignedBigInteger('movie_id');
+            $table->unsignedBigInteger('actor_id');
+            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+            $table->foreign('actor_id')->references('id')->on('actors')->onDelete('cascade');
             $table->timestamps();
         });
     }
