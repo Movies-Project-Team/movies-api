@@ -20,10 +20,6 @@ class GenreSeeder extends Seeder
                 'description' => 'Anime',
             ],
             [
-                'title' => 'aaaaaa',
-                'description' => 'aaaaaa',
-            ],
-            [
                 'title' => 'Chiến Tranh',
                 'description' => 'Chiến Tranh',
             ],

@@ -22,7 +22,12 @@ return new class extends Migration
             $table->dateTime('release_date');
             $table->text('slug');
             $table->integer('duration');
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
         });
     }
 

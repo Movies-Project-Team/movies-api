@@ -15,7 +15,12 @@ return new class extends Migration
             $table->id();
             $table->text('title');
             $table->text('description')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
         });
     }
 

@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('favourite', function (Blueprint $table) {
+        Schema::create('profile', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('movie_id');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
+            $table->text('name');
+            $table->dateTime('birthday')->nullable();
+            $table->integer('gender')->nullable();
+            $table->integer('phone')->unique()->nullable();
+            $table->string('password');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('created_at')->nullable();
             $table->unsignedInteger('created_by')->nullable();
@@ -23,6 +26,7 @@ return new class extends Migration
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->unsignedInteger('deleted_by')->nullable();
+
         });
     }
 
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('favourite');
+        Schema::dropIfExists('profile');
     }
 };

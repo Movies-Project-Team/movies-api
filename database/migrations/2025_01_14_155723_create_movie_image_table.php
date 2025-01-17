@@ -17,7 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('image_id');
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
             $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
+            $table->unsignedInteger('deleted_by')->nullable();
         });
     }
 

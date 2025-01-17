@@ -14,7 +14,7 @@ class LanguagesSeeder extends Seeder
     public function run(): void
     {
         //
-        DB::table('movies')->insert([
+        DB::table('languages')->insert([
             [
                 'title' => 'Anh',
                 'code' => 'Anh',
