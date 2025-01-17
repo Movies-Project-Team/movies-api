@@ -11,18 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('movie_genre', function (Blueprint $table) {
+        Schema::create('profile', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('movie_id');
-            $table->unsignedBigInteger('genre_id');
-            $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
-            $table->foreign('genre_id')->references('id')->on('genres')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->text('name');
+            $table->dateTime('birthday')->nullable();
+            $table->integer('gender')->nullable();
+            $table->integer('phone')->unique()->nullable();
+            $table->string('password');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamp('created_at');
             $table->unsignedInteger('created_by');
             $table->timestamp('updated_at');
             $table->unsignedInteger('updated_by');
             $table->timestamp('deleted_at');
             $table->unsignedInteger('deleted_by');
+
         });
     }
 
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('movie_genre');
+        Schema::dropIfExists('profile');
     }
 };
