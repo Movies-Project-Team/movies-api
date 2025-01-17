@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Symfony\Component\HttpFoundation\Response;
 
 class Controller extends BaseController
 {
@@ -12,42 +13,30 @@ class Controller extends BaseController
 
     public function sendResponseApi($params) {
         $params = array_merge([
-            'code' => 200,
+            'code' => Response::HTTP_OK,
             'data' => null,
-            'error' => null,
-            'paginate' => null,
-            'message' => null
+            'errors' => null,
         ], $params);
 
         $arrMessage = [
-            '200' => 'Success',
-            '400' => 'Invalid Parameters',
-            '401' => 'Unauthorize',
-            '403' => 'Forbidden',
-            '404' => 'Page Not Found',
-            '429' => 'Too Many Attempts',
-            '500' => 'Internal Server Error'
+            Response::HTTP_OK => 'Success',
+            Response::HTTP_BAD_REQUEST => 'Invalid Parameters',
+            Response::HTTP_UNAUTHORIZED => 'Unauthorized',
+            Response::HTTP_FORBIDDEN => 'Forbidden',
+            Response::HTTP_NOT_FOUND => 'Page Not Found',
+            Response::HTTP_TOO_MANY_REQUESTS => 'Too Many Attempts',
+            Response::HTTP_INTERNAL_SERVER_ERROR => 'Internal Server Error',
+            Response::HTTP_SERVICE_UNAVAILABLE => 'Service Unavailable',
         ];
 
         $return = [
-            'status' => $params['code'],
-            'statusMessage' => $arrMessage[$params['code']]
+            'message' => $arrMessage[$params['code']],
         ];
-
-        if (!empty($params['message'])) {
-            $return['message'] = $params['message'];
-        }
-
-        if (!empty($params['data'])) {
+        if ($params['data']) {
             $return['data'] = $params['data'];
         }
-
-        if (!empty($params['error'])) {
-            $return['error'] = $params['error'];
-        }
-
-        if (!empty($params['paginate'])) {
-            $return['paginate'] = $params['paginate'];
+        if ($params['errors']) {
+            $return['errors'] = $params['errors'];
         }
 
         return response()->json($return, $params['code']);
