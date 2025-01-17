@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Repositories;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
@@ -12,7 +12,7 @@ use App\Services\CommonService;
  * Class BaseModel
  * @package App\Models
  */
-abstract class BaseModel
+abstract class BaseRepository
 {
     protected $_db;
     protected $_cache;
