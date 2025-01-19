@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('alt');
             $table->text('url');
+            $table->text('type');
             $table->timestamp('created_at')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->timestamp('updated_at')->nullable();
