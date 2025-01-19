@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('client')->group(function () {
+Route::prefix('v1')->group(function () {
     foreach(glob(__DIR__ . '/client/*.php') as $file) {
         require_once $file;
     }
