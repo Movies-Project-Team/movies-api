@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
@@ -27,7 +27,7 @@ abstract class BaseRepository
     public function __construct($model)
     {
         $this->_db = CommonService::getModel($model, 'db');
-        $this->_cache = CommonService::getModel($model, 'cache');
+        // $this->_cache = CommonService::getModel($model, 'cache');
     }
 
     public function getInstance($instanceType = 'db')

@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(GenreSeeder::class);
         $this->call(LanguagesSeeder::class);
+        $this->call(User::class);
+        $this->call(Profile::class);
 
     }
 }

@@ -2,22 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-
-class Actors extends Model
+class Actors extends BaseRepository
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'name',
-        'image',
-    ];
-
-    public function movies(): BelongsToMany
-    {
-        return $this->belongsToMany(Movies::class, 'movie_actor', 'movie_id', 'actor_id');
+    public function __construct() {
+        parent::__construct('Actors');
     }
 }

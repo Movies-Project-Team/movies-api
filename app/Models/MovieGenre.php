@@ -2,15 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class MovieGenre extends Model
+class MovieGenre extends BaseRepository
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'movie_id',
-        'genre_id',
-    ];
+    public function __construct() {
+        parent::__construct('MovieGenre');
+    }
 }

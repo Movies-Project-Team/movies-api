@@ -2,27 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-class Episodes extends Model
+class Episodes extends BaseRepository
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'movie_id',
-        'season',
-        'title',
-        'episode',
-        'description',
-        'release_date',
-        'slug',
-        'duration',
-    ];
-
-    public function movies(): BelongsTo
-    {
-        return $this->belongsTo(Movies::class, 'movie_id');
+    public function __construct() {
+        parent::__construct('Episodes');
     }
 }

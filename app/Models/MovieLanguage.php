@@ -2,15 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class MovieLanguage extends Model
+class MovieLanguage extends BaseRepository
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'movie_id',
-        'language_id',
-    ];
+    public function __construct() {
+        parent::__construct('MovieLanguage');
+    }
 }

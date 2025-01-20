@@ -2,17 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Ratings extends Model
+class Ratings extends BaseRepository
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'movie_id',
-        'user_id',
-        'rate',
-        'comment',
-    ];
+    public function __construct() {
+        parent::__construct('Ratings');
+    }
 }

@@ -2,26 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class History extends Model
+class History extends BaseRepository
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'movie_id',
-        'user_id',
-        'date_watch',
-    ];
-
-    public function movie()
-    {
-        return $this->belongsTo(Movies::class, 'movie_id');
+    public function __construct() {
+        parent::__construct('History');
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 }

@@ -2,19 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Profile extends Model
+class Profile extends BaseRepository
 {
-    use HasFactory;
-    
-    protected $fillable = [
-        'user_id',
-        'name',
-        'birthday',
-        'gender',
-        'phone',
-        'password',
-    ];
+    public function __construct() {
+        parent::__construct('Profile');
+    }
 }
