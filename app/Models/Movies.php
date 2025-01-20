@@ -29,7 +29,6 @@ class Movies extends Model
         'thumbnail',
     ];
 
-
     public function episodes(): HasMany
     {
         return $this->hasMany(Episodes::class, 'movie_id');

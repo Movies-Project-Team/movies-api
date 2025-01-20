@@ -13,7 +13,4 @@ class MovieLanguage extends Model
         'movie_id',
         'language_id',
     ];
-
-    
-
 }

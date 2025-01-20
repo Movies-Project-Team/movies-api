@@ -13,5 +13,4 @@ class MovieActor extends Model
         'movie_id',
         'actor_id',
     ];
-
 }

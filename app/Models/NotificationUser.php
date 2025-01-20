@@ -13,6 +13,4 @@ class NotificationUser extends Model
         'user_id',
         'notification_id',
     ];
-    
-
 }
