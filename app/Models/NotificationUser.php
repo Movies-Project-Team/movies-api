@@ -2,15 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class NotificationUser extends Model
+class NotificationUser extends BaseRepository
 {
-    use HasFactory;
- 
-    protected $fillable = [
-        'user_id',
-        'notification_id',
-    ];
+    public function __construct() {
+        parent::__construct('NotificationUser');
+    }
 }

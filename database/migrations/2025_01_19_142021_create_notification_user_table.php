@@ -12,8 +12,6 @@ return new class extends Migration {
     {
         Schema::create('notification_user', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('notification_id');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('notification_id')->references('id')->on('notifications')->onDelete('cascade');
             $table->timestamp('created_at')->nullable();
