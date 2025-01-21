@@ -53,12 +53,12 @@ class MailTemplate extends Notification implements ShouldQueue
      * @param  mixed $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         $templateView = new TemplateMailable($this->template, $this->params);
 
         return (new MailMessage())
-            ->subject($templateView->getSubject())
+            ->subject(subject: $templateView->getSubject())
             ->markdown($this->template, $this->params);;
     }
 }
