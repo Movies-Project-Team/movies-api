@@ -28,6 +28,7 @@ class GetListProfileRequest extends FormRequest
      */
     public function rules(): array
     {
+        dd($this);
         return [
             'user_id' => 'required',
         ];

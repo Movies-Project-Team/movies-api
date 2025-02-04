@@ -14,6 +14,13 @@ class GetProfileRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'profile_id' => $this->route('id')
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

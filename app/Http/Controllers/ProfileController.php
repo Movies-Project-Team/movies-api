@@ -7,19 +7,12 @@ use App\Http\Requests\ChangePasswordProfileRequest;
 use App\Http\Requests\GetListProfileRequest;
 use App\Http\Requests\GetProfileRequest;
 use App\Http\Requests\VerifyPasswordProfileRequest;
-use App\Models\Profile;
+use App\Services\CommonService;
 use Hash;
-use Illuminate\Http\Request;
+
 
 class ProfileController extends Controller
 {
-    protected $profileRepository;
-
-    public function __construct(Profile $profileRepository)
-    {
-        $this->profileRepository = $profileRepository;
-    }
-
     /**
      * Get List Profile by Account
      */
@@ -27,13 +20,7 @@ class ProfileController extends Controller
     {
         //
         try {
-            $profiles = $this->profileRepository->getData([
-                'type' => 2,
-                'where' => [
-                    'user_id' => $id
-                ]
-            ]);
-
+            $profiles = CommonService::getModel('Profile')->getList($id);
             return $this->sendResponseApi(['data' => $profiles, 'code' => 200]);
         } catch (\Exception $e) {
             return $this->sendResponseApi(['error' => $e->getMessage(), 'code' => 500]);
@@ -43,14 +30,11 @@ class ProfileController extends Controller
     /**
      * Get Profile by Account
      */
-    public function getProfile(GetProfileRequest $request)
+    public function getProfile(GetProfileRequest $request, $id)
     {
         //
         try {
-            $profile = $this->profileRepository->getData([
-                'type' => 1,
-                'id' => $request['profile_id']
-            ]);
+            $profile = CommonService::getModel('Profile')->getDetail($id);
 
             if (!$profile) {
                 return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
@@ -67,21 +51,18 @@ class ProfileController extends Controller
      */
     public function changePasswordProfile(ChangePasswordProfileRequest $request)
     {
+        
         try {
-            $profile = $this->profileRepository->getData([
-                'type' => 1,
-                'id' => $request['profile_id']
-            ]);
-
+            $profile = CommonService::getModel('Profile')->getDetail($request['profile_id']);
             if (!$profile) {
                 return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
             }
 
-            if (!Hash::check($request['old_password'], $profile->password)) {
+            if ($request['old_password'] !== $profile->password) {
                 return $this->sendResponseApi(['message' => 'Old password is incorrect', 'code' => 400]);
             }
 
-            $profile->password = Hash::make($request['new_password']);
+            $profile->password = $request['new_password'];
             $profile->save();
 
             return $this->sendResponseApi(['message' => 'Password updated successfully', 'code' => 200]);
@@ -97,16 +78,13 @@ class ProfileController extends Controller
     public function verifyPasswordProfile(VerifyPasswordProfileRequest $request)
     {
         try {
-            $profile = $this->profileRepository->getData([
-                'type' => 1,
-                'id' => $request['profile_id']
-            ]);
+            $profile = CommonService::getModel('Profile')->getDetail($request['profile_id']);
 
             if (!$profile) {
                 return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
             }
 
-            if (Hash::check($request['password'], $profile->password)) {
+            if ($request['password'] === $profile->password) {
                 return $this->sendResponseApi(['message' => 'Password is correct', 'code' => 200]);
             } else {
                 return $this->sendResponseApi(['message' => 'Password is incorrect', 'code' => 400]);

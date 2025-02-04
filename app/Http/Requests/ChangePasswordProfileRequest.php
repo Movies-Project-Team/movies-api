@@ -24,8 +24,8 @@ class ChangePasswordProfileRequest extends FormRequest
         return [
             //
             'profile_id' => 'required',
-            'old_password' => 'required|string',
-            'new_password' => 'required|string',
+            'old_password' => ['required', 'string'],
+            'new_password' => ['required', 'string'],
         ];
     }
 
