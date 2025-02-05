@@ -8,8 +8,6 @@ use App\Http\Requests\GetListProfileRequest;
 use App\Http\Requests\GetProfileRequest;
 use App\Http\Requests\VerifyPasswordProfileRequest;
 use App\Services\CommonService;
-use Hash;
-
 
 class ProfileController extends Controller
 {
