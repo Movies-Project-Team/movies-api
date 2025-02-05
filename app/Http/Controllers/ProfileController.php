@@ -18,7 +18,6 @@ class ProfileController extends Controller
      */
     public function getListProfile(GetListProfileRequest $request, $id)
     {
-        //
         try {
             $profiles = CommonService::getModel('Profile')->getList($id);
             return $this->sendResponseApi(['data' => $profiles, 'code' => 200]);
@@ -32,7 +31,6 @@ class ProfileController extends Controller
      */
     public function getProfile(GetProfileRequest $request, $id)
     {
-        //
         try {
             $profile = CommonService::getModel('Profile')->getDetail($id);
 
@@ -51,7 +49,6 @@ class ProfileController extends Controller
      */
     public function changePasswordProfile(ChangePasswordProfileRequest $request)
     {
-        
         try {
             $profile = CommonService::getModel('Profile')->getDetail($request['profile_id']);
 
@@ -62,14 +59,16 @@ class ProfileController extends Controller
             if ($request['old_password'] !== $profile->password) {
                 return $this->sendResponseApi(['message' => 'Old password is incorrect', 'code' => 400]);
             }
-            $profile->password = $request['new_password'];
-            $profile->save();
+
+            // update password
+            $profile->update([
+               'password' =>  $request['new_password'],
+            ]);
 
             return $this->sendResponseApi(['message' => 'Password updated successfully', 'code' => 200]);
         } catch (\Exception $e) {
             return $this->sendResponseApi(['error' => $e->getMessage(), 'code' => 500]);
         }
-
     }
 
     /**
@@ -84,11 +83,7 @@ class ProfileController extends Controller
                 return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
             }
 
-            if ($request['password'] === $profile->password) {
-                return $this->sendResponseApi(['message' => 'Password is correct', 'code' => 200]);
-            } else {
-                return $this->sendResponseApi(['message' => 'Password is incorrect', 'code' => 400]);
-            }
+            return $this->sendResponseApi(['message' => 'Password is correct', 'code' => 200]);
         } catch (\Exception $e) {
             return $this->sendResponseApi(['error' => $e->getMessage(), 'code' => 500]);
         }

@@ -24,7 +24,7 @@ class VerifyPasswordProfileRequest extends FormRequest
     {
         return [
             'profile_id' => 'required',
-            'password' => ['required', 'string', new verifyPasswordProfile],
+            'password' => ['required', 'string', new verifyPasswordProfile()],
         ];
     }
 
