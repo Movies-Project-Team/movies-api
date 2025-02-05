@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\client\verifyPasswordProfile;
 use Illuminate\Foundation\Http\FormRequest;
 
 class VerifyPasswordProfileRequest extends FormRequest
@@ -23,7 +24,7 @@ class VerifyPasswordProfileRequest extends FormRequest
     {
         return [
             'profile_id' => 'required',
-            'password' => 'required|string',
+            'password' => ['required', 'string', new verifyPasswordProfile],
         ];
     }
 
