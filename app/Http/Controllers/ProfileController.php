@@ -54,14 +54,6 @@ class ProfileController extends Controller
         
         try {
             $profile = CommonService::getModel('Profile')->getDetail($request['profile_id']);
-
-            if (!$profile) {
-                return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
-            }
-
-            if ($request['old_password'] !== $profile->password) {
-                return $this->sendResponseApi(['message' => 'Old password is incorrect', 'code' => 400]);
-            }
             $profile->password = $request['new_password'];
             $profile->save();
 
@@ -80,15 +72,7 @@ class ProfileController extends Controller
         try {
             $profile = CommonService::getModel('Profile')->getDetail($request['profile_id']);
 
-            if (!$profile) {
-                return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
-            }
-
-            if ($request['password'] === $profile->password) {
-                return $this->sendResponseApi(['message' => 'Password is correct', 'code' => 200]);
-            } else {
-                return $this->sendResponseApi(['message' => 'Password is incorrect', 'code' => 400]);
-            }
+            return $this->sendResponseApi(['message' => 'Password updated successfully', 'code' => 200]);
         } catch (\Exception $e) {
             return $this->sendResponseApi(['error' => $e->getMessage(), 'code' => 500]);
         }
