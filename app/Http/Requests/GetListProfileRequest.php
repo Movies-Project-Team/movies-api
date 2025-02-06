@@ -17,7 +17,7 @@ class GetListProfileRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'user_id' => $this->route('id')
+            'userId' => $this->route('id')
         ]);
     }
 
@@ -28,16 +28,15 @@ class GetListProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        dd($this);
         return [
-            'user_id' => 'required',
+            'userId' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'user_id.required' => 'The :attribute field is required.',
+            'userId.required' => 'The :attribute field is required.',
         ];
     }
 

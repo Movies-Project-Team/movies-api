@@ -23,7 +23,7 @@ class VerifyPasswordProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_id' => 'required',
+            'profileId' => 'required',
             'password' => ['required', 'string', new verifyPasswordProfile()],
         ];
     }
@@ -31,7 +31,7 @@ class VerifyPasswordProfileRequest extends FormRequest
     public function messages()
     {
         return [
-            'profile_id.required' => 'The :attribute field is required.',
+            'profileId.required' => 'The :attribute field is required.',
             'password.required' => 'The :attribute field is required.',
             'password.string' => 'The :attribute field is must string.',
         ];
