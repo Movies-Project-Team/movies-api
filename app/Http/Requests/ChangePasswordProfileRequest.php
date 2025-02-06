@@ -24,27 +24,27 @@ class ChangePasswordProfileRequest extends FormRequest
     {
         return [
             //
-            'profile_id' => 'required',
-            'old_password' => ['required', 'string', 'size:4', new verifyPasswordProfile()],
-            'old_password_confirmation' => ['required', 'string', 'size:4', 'same:old_password'],
-            'new_password' => ['required', 'string', 'size:4'],
+            'profileId' => 'required',
+            'oldPassword' => ['required', 'string', 'size:4', new verifyPasswordProfile()],
+            'oldPasswordConfirmation' => ['required', 'string', 'size:4', 'same:old_password'],
+            'newPassword' => ['required', 'string', 'size:4'],
         ];
     }
 
     public function messages()
     {
         return [
-            'profile_id.required' => 'The :attribute field is required.',
-            'old_password.required' => 'The :attribute field is required.',
-            'old_password_confirmation.required' => 'The :attribute field is required.',
-            'new_password.required' => 'The :attribute field is required.',
-            'old_password.size' => 'The :attribute field must be exactly 4 letters.',
-            'old_password_confirmation.size' => 'The :attribute field must be exactly 4 letters.',
-            'new_password.size' => 'The :attribute field must be exactly 4 letters.',
-            'old_password.string' => 'The :attribute field is must string.',
-            'old_password_confirmation.string' => 'The :attribute field is must string.',
-            'new_password.string' => 'The :attribute field is must string.',
-            'old_password_confirmation.same' => 'The :attribute does not match the password.',
+            'profileId.required' => 'The :attribute field is required.',
+            'oldPassword.required' => 'The :attribute field is required.',
+            'oldPasswordConfirmation.required' => 'The :attribute field is required.',
+            'newPassword.required' => 'The :attribute field is required.',
+            'oldPassword.size' => 'The :attribute field must be exactly 4 letters.',
+            'oldPasswordConfirmation.size' => 'The :attribute field must be exactly 4 letters.',
+            'newPassword.size' => 'The :attribute field must be exactly 4 letters.',
+            'oldPassword.string' => 'The :attribute field is must string.',
+            'oldPasswordConfirmation.string' => 'The :attribute field is must string.',
+            'newPassword.string' => 'The :attribute field is must string.',
+            'oldPasswordConfirmation.same' => 'The :attribute does not match the password.',
         ];
     }
 }
