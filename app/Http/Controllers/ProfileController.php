@@ -8,8 +8,6 @@ use App\Http\Requests\GetListProfileRequest;
 use App\Http\Requests\GetProfileRequest;
 use App\Http\Requests\VerifyPasswordProfileRequest;
 use App\Services\CommonService;
-use Hash;
-
 
 class ProfileController extends Controller
 {
@@ -18,7 +16,6 @@ class ProfileController extends Controller
      */
     public function getListProfile(GetListProfileRequest $request, $id)
     {
-        //
         try {
             $profiles = CommonService::getModel('Profile')->getList($id);
             return $this->sendResponseApi(['data' => $profiles, 'code' => 200]);
@@ -32,7 +29,6 @@ class ProfileController extends Controller
      */
     public function getProfile(GetProfileRequest $request, $id)
     {
-        //
         try {
             $profile = CommonService::getModel('Profile')->getDetail($id);
 
@@ -51,17 +47,26 @@ class ProfileController extends Controller
      */
     public function changePasswordProfile(ChangePasswordProfileRequest $request)
     {
-        
         try {
             $profile = CommonService::getModel('Profile')->getDetail($request['profile_id']);
-            $profile->password = $request['new_password'];
-            $profile->save();
+
+            if (!$profile) {
+                return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
+            }
+
+            if ($request['old_password'] !== $profile->password) {
+                return $this->sendResponseApi(['message' => 'Old password is incorrect', 'code' => 400]);
+            }
+
+            // update password
+            $profile->update([
+               'password' =>  $request['new_password'],
+            ]);
 
             return $this->sendResponseApi(['message' => 'Password updated successfully', 'code' => 200]);
         } catch (\Exception $e) {
             return $this->sendResponseApi(['error' => $e->getMessage(), 'code' => 500]);
         }
-
     }
 
     /**
@@ -72,7 +77,11 @@ class ProfileController extends Controller
         try {
             $profile = CommonService::getModel('Profile')->getDetail($request['profile_id']);
 
-            return $this->sendResponseApi(['message' => 'Password updated successfully', 'code' => 200]);
+            if (!$profile) {
+                return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
+            }
+
+            return $this->sendResponseApi(['message' => 'Password is correct', 'code' => 200]);
         } catch (\Exception $e) {
             return $this->sendResponseApi(['error' => $e->getMessage(), 'code' => 500]);
         }
