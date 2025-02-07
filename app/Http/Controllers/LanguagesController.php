@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\CommonService;
-use Illuminate\Http\Request;
 
 class LanguagesController extends Controller
 {

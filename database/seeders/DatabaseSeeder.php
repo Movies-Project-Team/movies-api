@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call(LanguagesSeeder::class);
         $this->call(User::class);
         $this->call(Profile::class);
+        $this->call(RoleSeeder::class);
+        $this->call(AdminSeeder::class);
 
     }
 }
