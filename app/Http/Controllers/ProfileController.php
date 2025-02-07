@@ -48,7 +48,7 @@ class ProfileController extends Controller
     public function changePasswordProfile(ChangePasswordProfileRequest $request)
     {
         try {
-            $profile = CommonService::getModel('Profile')->getDetail($request['profile_id']);
+            $profile = CommonService::getModel('Profile')->getDetail($request['profileId']);
 
             if (!$profile) {
                 return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
@@ -75,7 +75,7 @@ class ProfileController extends Controller
     public function verifyPasswordProfile(VerifyPasswordProfileRequest $request)
     {
         try {
-            $profile = CommonService::getModel('Profile')->getDetail($request['profile_id']);
+            $profile = CommonService::getModel('Profile')->getDetail($request['profileId']);
 
             if (!$profile) {
                 return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);

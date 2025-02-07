@@ -8,4 +8,10 @@ class Genres extends BaseRepository
         parent::__construct('Genres');
     }
 
+    public function getList()
+    {
+        return $this->getData([
+            'type' => 2,
+        ]);
+    }
 }

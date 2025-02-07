@@ -10,5 +10,4 @@ Route::prefix('profile')->group(function () {
         Route::post('/change/password', 'changePasswordProfile')->name('profile.changePassword');
         Route::post('/verify/password', 'verifyPasswordProfile')->name('profile.verifyPassword');
     });
-    
 });;

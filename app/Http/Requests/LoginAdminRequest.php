@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\client\verifyPasswordProfile;
 use Illuminate\Foundation\Http\FormRequest;
 
-class VerifyPasswordProfileRequest extends FormRequest
+class LoginAdminRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +22,18 @@ class VerifyPasswordProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profileId' => 'required',
-            'password' => ['required', 'string', new verifyPasswordProfile()],
+            'email' => ['required','email'],
+            'password' => ['required','min:4'],
         ];
     }
 
     public function messages()
     {
         return [
-            'profileId.required' => 'The :attribute field is required.',
+            'email.required' => 'The :attribute field is required.',
             'password.required' => 'The :attribute field is required.',
-            'password.string' => 'The :attribute field is must string.',
+            'email.email' => 'The :attribute field must be a valid email address.',
+            'password.min' => 'The :attribute field must be at least 4 characters.',
         ];
     }
 }
