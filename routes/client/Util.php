@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\GenresController;
-use App\Http\Controllers\LanguagesController;
+use App\Http\Controllers\Client\GenresController;
+use App\Http\Controllers\Client\LanguagesController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('util')->group(function () {

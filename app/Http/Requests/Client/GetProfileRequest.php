@@ -1,19 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Client;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiRequest;
 
-class GetProfileRequest extends FormRequest
+class GetProfileRequest extends ApiRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     protected function prepareForValidation(): void
     {
         $this->merge([
