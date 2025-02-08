@@ -17,7 +17,7 @@ class GetProfileRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'profile_id' => $this->route('id')
+            'profileId' => $this->route('id')
         ]);
     }
 
@@ -29,14 +29,14 @@ class GetProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_id' => 'required',
+            'profileId' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'profile_id.required' => 'The :attribute field is required.',
+            'profileId.required' => 'The :attribute field is required.',
         ];
     }
 }
