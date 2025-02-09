@@ -15,4 +15,12 @@ final class Constants {
 
     public const EMAIL_BIND_OPEN = "{{";
     public const EMAIL_BIND_CLOSE = "}}";
+
+    public const ORDER_BY_DESC = "DESC";
+    public const ORDER_BY_ASC = "ASC";
+
+    public const ORDER_BY_LIST = [
+        self::ORDER_BY_DESC,
+        self::ORDER_BY_ASC,
+    ];
 }
