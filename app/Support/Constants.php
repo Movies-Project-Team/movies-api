@@ -23,4 +23,12 @@ final class Constants {
         self::ORDER_BY_DESC,
         self::ORDER_BY_ASC,
     ];
+
+    public const PERMISSION_ADULT = 1;
+    public const PERMISSION_CHILD = 2;
+
+    public const PERMISSION = [
+        self::PERMISSION_ADULT,
+        self::PERMISSION_CHILD
+    ];
 }

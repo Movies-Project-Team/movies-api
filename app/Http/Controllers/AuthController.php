@@ -7,6 +7,7 @@ use App\Http\Requests\AuthRequest;
 use App\Http\Requests\ChangePassworUserRequest;
 use App\Http\Requests\VerifyPasswordUserRequest;
 use App\Services\CommonService;
+use App\Support\Constants;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -18,7 +19,7 @@ class AuthController extends Controller
             $data = $request->all();
 
             $data['password'] = Hash::make($data['password']);
-            $data['permission'] = 1;
+            $data['permission'] = Constants::PERMISSION_ADULT;
 
             $user = CommonService::getModel('User')->create($data);
             $token = $user->createToken('auth_token')->plainTextToken;
@@ -36,7 +37,7 @@ class AuthController extends Controller
         try {
             $data = $request->all();
 
-            $user = CommonService::getModel('User')->getData(['type' => '1', 'where' => ['email' => $data['email']]]);
+            $user = CommonService::getModel('User')->getDetailByEmail($data['email']);
 
             if (!$user || !Hash::check($data['password'], $user->password)) {
 

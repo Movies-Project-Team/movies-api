@@ -39,6 +39,8 @@ class Controller extends BaseController
             $return['errors'] = $params['errors'];
         }
 
-        return response()->json($return, $params['code']);
+        unset($params['errors']);
+        
+        return response()->json(array_merge($return, $params));
     }
 }
