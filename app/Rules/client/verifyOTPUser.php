@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class verifyPasswordUser implements ValidationRule,DataAwareRule
+class verifyOTPUser implements ValidationRule,DataAwareRule
 {
     protected $data = [];
  
@@ -32,8 +32,6 @@ class verifyPasswordUser implements ValidationRule,DataAwareRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $profile = CommonService::getModel('User')->getDetail($this->data['userId']);
-        if($profile->password !== $value){
-            $fail("The {$attribute} is incorrect.");
-        }
+
     }
 }

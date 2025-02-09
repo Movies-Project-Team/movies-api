@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\client\verifyPasswordUser;
+use App\Rules\client\verifyOTPUser;
 use Illuminate\Foundation\Http\FormRequest;
 
-class VerifyPasswordUserRequest extends FormRequest
+class VerifyOTPUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class VerifyPasswordUserRequest extends FormRequest
     {
         return [
             'userId' => 'required',
-            'password' => ['required', 'string', new verifyPasswordUser()],
+            'otp' => ['required', 'numeric', 'digits:6',  new verifyOTPUser()],
         ];
     }
 

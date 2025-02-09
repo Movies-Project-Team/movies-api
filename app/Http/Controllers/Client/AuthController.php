@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Events\SendOtpEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\ChangePassworUserRequest;
-use App\Http\Requests\VerifyPasswordUserRequest;
+use App\Http\Requests\VerifyOTPUserRequest;
 use App\Services\CommonService;
 use App\Support\Constants;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function register(AuthRequest $request){
-        
         try {
-
             $data = $request->all();
 
             $data['password'] = Hash::make($data['password']);
@@ -23,6 +23,9 @@ class AuthController extends Controller
 
             $user = CommonService::getModel('User')->create($data);
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            // send otp
+            event(new SendOtpEvent($user));
 
             return $this->sendResponseApi(['data' => $user, 'code' => 200, 'token' => $token]);
         } catch (\Exception $e) {
@@ -60,7 +63,6 @@ class AuthController extends Controller
     public function changePasswordUser(ChangePassworUserRequest $request)
     {
         try {
-            
             $user = CommonService::getModel('User')->getDetail($request['userId']);
 
             if (!$user) {
@@ -85,16 +87,24 @@ class AuthController extends Controller
     /**
      * Verify Password User
      */
-    public function verifyPasswordUser(VerifyPasswordUserRequest $request)
+    public function verifyOTPUser(VerifyOTPUserRequest $request)
     {
         try {
-            $user = CommonService::getModel('User')->getDetail($request['userId']);
+            $otp = CommonService::getModel('UserOtp')->getDetailByUserAndOtp($request->userId, $request->otp);
 
-            if (!$user) {
-                return $this->sendResponseApi(['message' => 'User not found', 'code' => 404]);
+            if (!$otp) {
+                return $this->sendResponseApi(['message' => 'Invalid OTP. Please check your OTP and try again.', 'code' => 404]);
             }
 
-            return $this->sendResponseApi(['message' => 'Password is correct', 'code' => 200]);
+            if ($otp->expired_at < Carbon::now()->format('Y-m-d H:i:s')) {
+                // Return errors 
+                return $this->sendResponseApi([
+                    'code' => 400,
+                    'error' => 'OTP has expired'
+                ]);
+            }
+
+            return $this->sendResponseApi(['message' => 'Success', 'code' => 200]);
         } catch (\Exception $e) {
             return $this->sendResponseApi(['error' => $e->getMessage(), 'code' => 500]);
         }
