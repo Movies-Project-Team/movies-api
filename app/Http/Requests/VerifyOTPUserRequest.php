@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\client\verifyOTPUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 class VerifyOTPUserRequest extends FormRequest
@@ -24,7 +23,7 @@ class VerifyOTPUserRequest extends FormRequest
     {
         return [
             'userId' => 'required',
-            'otp' => ['required', 'numeric', 'digits:6',  new verifyOTPUser()],
+            'otp' => ['required', 'numeric', 'digits:6'],
         ];
     }
 
