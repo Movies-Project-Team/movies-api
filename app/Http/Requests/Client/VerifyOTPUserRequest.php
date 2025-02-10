@@ -1,19 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Client;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiRequest;
+use App\Rules\client\verifyPasswordUser;
 
-class VerifyOTPUserRequest extends FormRequest
+class VerifyOTPUserRequest extends ApiRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,8 +15,8 @@ class VerifyOTPUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => 'required',
-            'otp' => ['required', 'max:6'],
+            'userId' => 'required|exists:users,id',
+            'otp' => ['required', 'max:6', new verifyPasswordUser()],
         ];
     }
 

@@ -17,4 +17,13 @@ class UserOtp extends BaseRepository
             ]
         ]);
     }
+
+    public function getDetailByUser($userId) {
+        return $this->getData([
+            'type' => 1,
+            'where' => [
+                'user_id' => $userId
+            ]
+        ]);
+    }
 }

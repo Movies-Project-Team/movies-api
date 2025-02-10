@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Client;
 
 use App\Http\Requests\ApiRequest;
-
 
 class AuthRequest extends ApiRequest
 {

@@ -31,8 +31,9 @@ class verifyPasswordUser implements ValidationRule,DataAwareRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $profile = CommonService::getModel('Profile')->getDetail($this->data['profileId']);
-        if($profile->password !== $value){
+        $userOtp = CommonService::getModel('UserOtp')->getDetailByUser($this->data['userId']);
+
+        if($userOtp->otp !== $value){
             $fail("The {$attribute} is incorrect.");
         }
     }
