@@ -15,7 +15,7 @@ class SendOtpListener
      */
     public function handle(SendOtpEvent $event): void
     {
-        $otp = Helper::generateOTP();
+        $otp = Helper::generateNumber(4);
 
         $user = CommonService::getModel('User')->getDetailByEmail($event->user->email);
 

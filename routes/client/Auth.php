@@ -8,6 +8,6 @@ Route::prefix('auth')->group(function () {
         Route::post('/register', 'register')->name('auth.register');
         Route::post('/login', 'login')->name('auth.login');
         Route::post('/change/password', 'changePasswordUser')->name('auth.changePassword');
-        Route::post('/verify/password', 'verifyPasswordUser')->name('auth.verifyPassword');
+        Route::post('/verify/password', 'verifyOTPUser')->name('auth.verifyOtp');
     });
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Events\SendOtpEvent;
+use App\Events\VerifyUserEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\ChangePassworUserRequest;
@@ -43,7 +44,6 @@ class AuthController extends Controller
             $user = CommonService::getModel('User')->getDetailByEmail($data['email']);
 
             if (!$user || !Hash::check($data['password'], $user->password)) {
-
                 return $this->sendResponseApi(['message' => 'The provided credentials are incorrect.', 'code' => 401]);
             }
 
@@ -103,6 +103,8 @@ class AuthController extends Controller
                     'error' => 'OTP has expired'
                 ]);
             }
+
+            event(new VerifyUserEvent($request->userId));
 
             return $this->sendResponseApi(['message' => 'Success', 'code' => 200]);
         } catch (\Exception $e) {
