@@ -11,7 +11,7 @@ class Genres extends BaseRepository
     public function getList()
     {
         return $this->getData([
-            'type' => 2,
+            'type' => 3,
         ]);
     }
 }

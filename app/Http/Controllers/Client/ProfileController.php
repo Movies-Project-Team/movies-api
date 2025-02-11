@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ChangePasswordProfileRequest;
-use App\Http\Requests\GetListProfileRequest;
-use App\Http\Requests\GetProfileRequest;
-use App\Http\Requests\VerifyPasswordProfileRequest;
+use App\Http\Requests\Client\ChangePasswordProfileRequest;
+use App\Http\Requests\Client\GetListProfileRequest;
+use App\Http\Requests\Client\GetProfileRequest;
+use App\Http\Requests\Client\VerifyPasswordProfileRequest;
 use App\Services\CommonService;
 
 class ProfileController extends Controller
