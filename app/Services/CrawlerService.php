@@ -19,7 +19,8 @@ class CrawlerService
         $response = $client->request('GET', $url, [
             'headers' => [
                 'Accept' => $isDom ? 'text/html' : 'application/json',
-            ]
+            ],
+            'verify' => false
         ]);
 
         if ($response->getStatusCode() !== 200) {
