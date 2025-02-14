@@ -4,7 +4,7 @@ use App\Http\Controllers\Client\GenresController;
 use App\Http\Controllers\Client\LanguagesController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('util')->group(function () {
+Route::prefix('util')->middleware('auth:sanctum')->group(function () {
     Route::controller(GenresController::class)->group(function () {
         Route::get('/genres', 'getListGenres')->name('genres.list');
     });

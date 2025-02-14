@@ -2,16 +2,30 @@
 
 namespace App\Http\Middleware;
 
+use Carbon\Carbon;
+use Closure;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class Authenticate extends Middleware
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
+     * Handle an incoming request.
      */
-    protected function redirectTo(Request $request): ?string
+    public function handle($request, Closure $next, ...$guards)
     {
-        return $request->expectsJson() ? null : route('login');
+        $token = $request->bearerToken();
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!Auth::guard('sanctum')->check() || ($accessToken->expires_at && Carbon::now()->greaterThan($accessToken->expires_at))) {
+            return response()->json([
+                'code' => Response::HTTP_UNAUTHORIZED,
+                'message' => 'Unauthorized'
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return $next($request);
     }
 }
