@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\CrawlMovieJob;
 use App\Services\CommonService;
 use App\Services\CrawlerService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Config;
 
 class CrawlMovies extends Command
@@ -29,60 +31,59 @@ class CrawlMovies extends Command
     public function handle()
     {
         $url = Config::get('crawler.movies_url');
-        $detail_url = Config::get('crawler.detail_url');
-        // $pages = CrawlerService::getDataFromUrl($url . 1, false)['pagination']['totalPages'];
-        $pages = 10;
 
-        $this->info('Movies data is crawling.');
-        
+        $pages = 10; // Giới hạn số trang crawl
+        $this->info('Starting movie data crawl...');
+
         if (CrawlerService::isBlockedByRobotsTxt($url)) {
             $this->error('Crawling is blocked by robots.txt');
             return;
         }
-        
+
+        $slugs = $this->getSlugs($pages);
+
+        if (empty($slugs)) {
+            $this->warn('No movie slugs found. Exiting...');
+            return;
+        }
+
+        foreach ($slugs as $slug) {
+            try {
+                CrawlMovieJob::dispatch($slug);
+                $this->info("Job dispatched for slug: {$slug}");
+            } catch (\Exception $e) {
+                $this->error("Failed to dispatch job for slug: {$slug}. Error: " . $e->getMessage());
+            }
+        }
+
+        $this->info('All movies have been dispatched to the queue.');
+    }
+
+    /**
+     * Lấy danh sách slug từ nhiều trang
+     */
+    private function getSlugs($pages)
+    {
+        $slugs = [];
+        $url = Config::get('crawler.movies_url');
+
         for ($page = 1; $page <= $pages; $page++) {
+            $this->info("Fetching movie list from page {$page}...");
+
             $movies = CrawlerService::getDataFromUrl($url . $page, false);
-        
+
             if (empty($movies['items'])) {
                 $this->warn("No data found on page {$page}. Skipping...");
                 continue;
             }
-        
-            $this->info("Processing page {$page}...");
-        
-            $movieData = [];
-        
-            foreach ($movies['items'] as $movie) {
-                $detailMovies = CrawlerService::getDataFromUrl($detail_url . $movie['slug'], false);
 
-                
-                $movieData[] = [
-                    'id' => $movie['id'],
-                    'title' => $movie['title'],
-                    'description' => $movie['description'] ?? null,
-                    'release_year' => $movie['year'] ?? null,
-                    'rating' => $movie['rating'] ?? null,
-                    'thumbnail' => $movie['thumb_url'] ?? null,
-                    'IMDb',
-                    'title_original',
-                    'trailer_url',
-                    'type',
-                    'time',
-                    'esp_total',
-                    'esp_current',
-                    'slug',
-                    'produce_by',
-                ];
-            }
-            
-            dd($movieData);
-            if (!empty($movieData)) {
-                CommonService::getModel('Movies')->upsert($movieData, ['id']);
-                $this->info("Page {$page} has been successfully processed.");
+            foreach ($movies['items'] as $movie) {
+                if (!empty($movie['slug'])) {
+                    $slugs[] = $movie['slug'];
+                }
             }
         }
-        
 
-        $this->info('Movies data has been successfully crawled and stored.');
+        return $slugs;
     }
 }
