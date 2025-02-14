@@ -47,8 +47,12 @@ class AuthController extends Controller
                 return $this->sendResponseApi(['message' => 'The provided credentials are incorrect.', 'code' => 401]);
             }
 
-            $token = $user->createToken('auth_token')->plainTextToken;
-
+            $accessToken = $user->createToken('auth_token');
+            $accessToken->accessToken->expires_at = Carbon::now()->addHours(1);
+            $accessToken->accessToken->save();
+            
+            $token = $accessToken->plainTextToken;
+            
             return $this->sendResponseApi(['data' => $user, 'code' => 200, 'token' => $token]);
         } catch (\Exception $e) {
 
