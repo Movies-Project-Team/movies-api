@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class LanguagesSeeder extends Seeder
 {
@@ -13,8 +13,7 @@ class LanguagesSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        DB::table('languages')->insert([
+        $langs = [
             [
                 'title' => 'Anh',
                 'code' => 'Anh',
@@ -63,7 +62,11 @@ class LanguagesSeeder extends Seeder
                 'title' => 'Khác',
                 'code' => 'Khác',
             ],
+        ];
 
-        ]);
+        foreach($langs as &$lang){
+            $lang['slug'] = Str::slug($lang['title'], '-');
+        }
+        DB::table('languages')->insert($langs);
     }
 }

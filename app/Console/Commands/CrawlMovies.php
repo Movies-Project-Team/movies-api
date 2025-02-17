@@ -33,6 +33,7 @@ class CrawlMovies extends Command
         $url = Config::get('crawler.movies_url');
 
         $pages = 10; // Giới hạn số trang crawl
+
         $this->info('Starting movie data crawl...');
 
         if (CrawlerService::isBlockedByRobotsTxt($url)) {
@@ -47,9 +48,10 @@ class CrawlMovies extends Command
             return;
         }
 
+        $batch = Bus::batch([])->dispatch();
         foreach ($slugs as $slug) {
             try {
-                CrawlMovieJob::dispatch($slug);
+                $batch->add(new CrawlMovieJob($slug));
                 $this->info("Job dispatched for slug: {$slug}");
             } catch (\Exception $e) {
                 $this->error("Failed to dispatch job for slug: {$slug}. Error: " . $e->getMessage());

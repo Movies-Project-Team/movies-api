@@ -13,6 +13,7 @@ class Languages extends Model
     protected $fillable = [
         'title',
         'code',
+        'slug'
     ];
 
     public function movies(): BelongsToMany
