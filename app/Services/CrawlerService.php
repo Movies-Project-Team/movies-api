@@ -22,21 +22,22 @@ class CrawlerService
             ],
             'verify' => false
         ]);
-
-        if ($response->getStatusCode() !== 200) {
-            throw new \Exception("Error fetching data from URL: {$url}");
-        }
-
         if ($isDom) {
             $htmlContent = $response->getBody()->getContents();
             return new Crawler($htmlContent);
-        } else {
-            $jsonData = json_decode($response->getBody()->getContents(), true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new \Exception('Invalid JSON response: ' . json_last_error_msg());
-            }
-            return $jsonData;
         }
+
+        $contentType = $response->getHeaderLine('Content-Type');
+        if (strpos($contentType, 'image') !== false) {
+            return $response->getBody()->getContents();
+        }
+
+        $jsonData = json_decode($response->getBody()->getContents(), true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Invalid JSON response: ' . json_last_error_msg());
+        }
+
+        return $jsonData;
     }
 
     /**
