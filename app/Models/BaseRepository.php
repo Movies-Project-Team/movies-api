@@ -228,17 +228,29 @@ abstract class BaseRepository
         return $this->_db->where($attributes)->first();
     }
 
-    public function upsert($attributes, $options = [])
+    public function upsert(array $attributes, array $data, $options = [])
     {
-        $data = $this->findByAttributes($attributes);
+        // $data = $this->findByAttributes($attributes);
 
-        if ($data) {
-            $data->update($options);
-        } else {
-            $data = $this->_db->create($options);
-        }
+        // if ($data) {
+        //     $data->update($options);
+        // } else {
+        //     $data = $this->_db->create($options);
+        // }
 
-        return $data;
+        // return $data;
+        /////////////////////////////////////////////////
+        $identifierKeys = array_keys($attributes);
+        
+        $record = array_merge($attributes, $data);
+
+        $this->_db->upsert(
+            [$record],    
+            $identifierKeys,
+            array_keys($data) 
+        );
+
+        return $record;
     }
 
     public function createOrPass($attributes, $options = [])

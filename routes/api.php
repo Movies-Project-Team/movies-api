@@ -23,3 +23,9 @@ Route::prefix('v1/client')->middleware(['middleware' => 'cors'])->group(function
         require_once $file;
     }
 });
+
+Route::prefix('v1/admin')->middleware(['middleware' => 'cors'])->group(function () {
+    foreach(glob(__DIR__ . '/admin/*.php') as $file) {
+        require_once $file;
+    }
+});

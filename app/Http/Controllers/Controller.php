@@ -11,14 +11,14 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function sendResponseApi($params) {
+    public function sendResponseApi($params = []) {
         $params = array_merge([
             'code' => Response::HTTP_OK,
+            'message' => null,
             'data' => null,
-            'errors' => null,
         ], $params);
 
-        $arrMessage = [
+        $responseMessages = [
             Response::HTTP_OK => 'Success',
             Response::HTTP_BAD_REQUEST => 'Invalid Parameters',
             Response::HTTP_UNAUTHORIZED => 'Unauthorized',
@@ -29,18 +29,14 @@ class Controller extends BaseController
             Response::HTTP_SERVICE_UNAVAILABLE => 'Service Unavailable',
         ];
 
-        $return = [
-            'message' => $arrMessage[$params['code']],
-        ];
-        if ($params['data']) {
-            $return['data'] = $params['data'];
-        }
-        if ($params['errors']) {
-            $return['errors'] = $params['errors'];
+        $params['message'] = $params['message'] ?? ($responseMessages[$params['code']] ?? 'Unknown Status');
+
+        if ($params['code'] === Response::HTTP_OK) {
+            unset($params['errors']);
+        } else {
+            unset($params['data']);
         }
 
-        unset($params['errors']);
-        
-        return response()->json(array_merge($return, $params));
+        return response()->json($params, $params['code']);
     }
 }

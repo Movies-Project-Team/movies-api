@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('code');
+            $table->string('slug');
             $table->timestamp('created_at')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->timestamp('updated_at')->nullable();
