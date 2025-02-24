@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('v1/client')->middleware(['middleware' => 'cors'])->group(function () {
+Route::prefix('v1/client')->group(function () {
     foreach(glob(__DIR__ . '/client/*.php') as $file) {
         require_once $file;
     }
