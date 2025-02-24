@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('genres', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
+            $table->string('title');
+            $table->string('slug');
             $table->text('description')->nullable();
             $table->timestamp('created_at')->nullable();
             $table->unsignedInteger('created_by')->nullable();

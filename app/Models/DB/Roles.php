@@ -6,18 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Languages extends Model
+class Roles extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'code',
-        'slug'
+        'name',
     ];
 
-    public function movies(): BelongsToMany
+    public function admins(): BelongsToMany
     {
-        return $this->belongsToMany(Movies::class, 'movie_language', 'movie_id', 'language_id');
+        return $this->belongsToMany(Admin::class, 'admin_role', 'role_id', 'admin_id');
     }
 }
