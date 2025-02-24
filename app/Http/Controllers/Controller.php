@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,5 +44,17 @@ class Controller extends BaseController
         unset($params['errors']);
         
         return response()->json(array_merge($return, $params));
+    }
+
+    public function getListPaginate(ResourceCollection $data) {
+        return $this->sendResponseApi([
+            'data' => $data,
+            'paginate' => [
+                'totalItems' => $data->total(),
+                'currentPage' => $data->currentPage(),
+                'totalPages' => $data->total() ? $data->lastPage() : 0,
+                'totalItemsPerPage' => $data->perPage(),
+            ]
+        ]);
     }
 }
