@@ -3,11 +3,14 @@
 namespace App\Console\Commands;
 
 use App\Jobs\CrawlMovieJob;
-use App\Services\CommonService;
 use App\Services\CrawlerService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Config;
+use App\Models\CrawlMovieLog;
+use App\Services\CommonService;
+use Carbon\Carbon;
+
 
 class CrawlMovies extends Command
 {
@@ -49,14 +52,24 @@ class CrawlMovies extends Command
         }
 
         $batch = Bus::batch([])->dispatch();
+        $totalMovies = count($slugs);
+        $successCount = 0;
+        $failedCount = 0;
+
         foreach ($slugs as $slug) {
             try {
                 $batch->add(new CrawlMovieJob($slug));
+                $successCount++;
                 $this->info("Job dispatched for slug: {$slug}");
             } catch (\Exception $e) {
+                $failedCount++;
                 $this->error("Failed to dispatch job for slug: {$slug}. Error: " . $e->getMessage());
             }
         }
+
+        CommonService::getModel('CrawlMovieLog')->upsert
+
+        $successRate = ($totalMovies > 0) ? ($successCount / $totalMovies) * 100 : 0;
 
         $this->info('All movies have been dispatched to the queue.');
     }
