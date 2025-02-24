@@ -23,10 +23,23 @@ class Movies extends BaseRepository
 
         $where = [];
         if (!empty($params['keyword'])) {
-            $where = [
-                'title' => ['like', '%' . $params['keyword'] . '%'],
-            ];
-        };
+            $keyword = trim($params['keyword']);
+            $keywords = explode(' ', $keyword);
+    
+            $where[] = function ($query) use ($keywords, $keyword) {
+                $query->where(function ($subQuery) use ($keywords) {
+                    foreach ($keywords as $word) {
+                        $subQuery->where('title', 'like', "%$word%");
+                    }
+                })->orWhere(function ($subQuery) use ($keywords) {
+                    foreach ($keywords as $word) {
+                        $subQuery->where('name', 'like', "%$word%");
+                    }
+                });
+
+                $query->orWhereRaw("MATCH(title, name) AGAINST(? IN BOOLEAN MODE)", [$keyword]);
+            };
+        }
 
         return $this->getData([
             'type' => 2,
