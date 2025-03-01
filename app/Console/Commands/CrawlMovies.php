@@ -67,7 +67,7 @@ class CrawlMovies extends Command
             }
         }
 
-        CommonService::getModel('CrawlMovieLog')->upsert
+        CommonService::getModel('CrawlMovieLog')->upsert;
 
         $successRate = ($totalMovies > 0) ? ($successCount / $totalMovies) * 100 : 0;
 
