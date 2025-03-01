@@ -37,7 +37,7 @@ class Movies extends BaseRepository
                     }
                 });
 
-                $query->orWhereRaw("MATCH(title, name) AGAINST(? IN BOOLEAN MODE)", [$keyword]);
+                // $query->orWhereRaw("MATCH(title, name) AGAINST(? IN BOOLEAN MODE)", [$keyword]);
             };
         }
 

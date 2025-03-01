@@ -53,4 +53,12 @@ class Controller extends BaseController
             ]
         ]);
     }
+
+    public function sendErrorApi($message)
+    {
+        return response()->json([
+            'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'message' => $message,
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
 }

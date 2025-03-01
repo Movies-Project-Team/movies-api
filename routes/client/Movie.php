@@ -5,6 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('movies')->group(function () {
     Route::controller(MovieController::class)->group(function () {
-        Route::get('/', 'getList')->name('movie.list');
+        Route::get('/', 'list')->name('movie.list');
     });
 });;
