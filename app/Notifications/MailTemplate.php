@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\Repositories\Client\MailTemplateRepository;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Contracts\Queue\ShouldQueue;

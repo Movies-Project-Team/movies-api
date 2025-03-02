@@ -30,4 +30,20 @@ class MovieController extends Controller
             return $this->sendErrorApi($e->getMessage());
         }
     }
+
+    public function detail(Request $request, $slug)
+    {
+        try {
+            $data = CommonService::getModel('Movies')->getDetailBySlug($slug);
+            if (!$data) {
+                return $this->sendErrorApi('Data not found');
+            }
+
+            return $this->getDetailData(new MovieResource($data));
+        } catch (\Exception $e) {
+            Log::error('Error in get method', ['message' => $e->getMessage()]);
+    
+            return $this->sendErrorApi($e->getMessage());
+        }
+    }
 }

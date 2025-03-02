@@ -18,11 +18,15 @@ class MovieResource extends JsonResource
             'id' => (int) $this->id,
             'title' => $this->title,
             'name' => $this->name,
+            'description' => $this->description,
+            'produce_by' => $this->produce_by,
+            'season' => $this->season,
             'lang' => $this->lang,
             'esp_total' => $this->esp_total,
             'year' => $this->year,
             'slug' => $this->slug,
             'thumbnail' => $this->thumbnail,
+            'poster' => $this->poster,
         ];
     }
 }

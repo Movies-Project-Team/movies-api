@@ -49,4 +49,14 @@ class Movies extends BaseRepository
             'orderBy' => $params['orderBy']
         ]);
     }
+
+    public function getDetailBySlug($slug)
+    {
+        return $this->getData([
+            'type' => 1,
+            'where' => [
+                'slug' => $slug
+            ]
+        ]);
+    }
 }

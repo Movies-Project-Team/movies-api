@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller as BaseController;
@@ -53,6 +54,14 @@ class Controller extends BaseController
             ]
         ]);
     }
+
+    public function getDetailData(JsonResource $data)
+    {
+        return $this->sendResponseApi([
+            'data' => $data
+        ]);
+    }
+
 
     public function sendErrorApi($message)
     {
