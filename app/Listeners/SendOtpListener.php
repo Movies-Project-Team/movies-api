@@ -7,8 +7,9 @@ use App\Notifications\MailTemplate;
 use App\Services\CommonService;
 use App\Support\Helper;
 use Carbon\Carbon;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendOtpListener
+class SendOtpListener implements ShouldQueue
 {
     /**
      * Handle the event.
