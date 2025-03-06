@@ -43,12 +43,10 @@ class CrawlMovieJob implements ShouldQueue
     {
         Log::info("Bắt đầu crawl phim: {$this->slug}");
 
-        $detailUrl = config('crawler.detail_url');
-        $client = new Client(['timeout' => 10]); // Thiết lập timeout để tránh request quá lâu
-
+        $detailUrl = config('crawler.detail_url');        
+        
         try {
-            $response = $client->get($detailUrl . $this->slug);
-            $movieData = json_decode($response->getBody(), true);
+            $movieData = CrawlerService::getDataFromUrl($detailUrl . $this->slug, false);
         } catch (\Exception $e) {
             Log::error("Lỗi khi lấy dữ liệu phim {$this->slug}: " . $e->getMessage());
             return;
@@ -90,7 +88,6 @@ class CrawlMovieJob implements ShouldQueue
             return;
         }
 
-        // CommonService::getModel('Movies')->upsert(['slug' => $movie['slug']], $data);
         CommonService::getModel('Movies')->upsert([$data], ['slug'], array_keys($data));
 
         Log::info("Crawl phim thành công: {$this->slug}");

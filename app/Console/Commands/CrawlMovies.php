@@ -2,12 +2,22 @@
 
 namespace App\Console\Commands;
 
+use App\Exports\CrawlerExport;
 use App\Jobs\CrawlMovieJob;
-use App\Services\CommonService;
+use App\Models\CrawlMovieLog;
 use App\Services\CrawlerService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Config;
+use App\Services\CommonService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CrawlMovies extends Command
 {
@@ -28,12 +38,14 @@ class CrawlMovies extends Command
     /**
      * Execute the console command.
      */
+
+    private int $successCount = 0;
+    private int $failedCount = 0;
+
     public function handle()
     {
         $url = Config::get('crawler.movies_url');
-
-        $pages = 10; // Giới hạn số trang crawl
-
+        $pages = 10;
         $this->info('Starting movie data crawl...');
 
         if (CrawlerService::isBlockedByRobotsTxt($url)) {
@@ -42,23 +54,46 @@ class CrawlMovies extends Command
         }
 
         $slugs = $this->getSlugs($pages);
-
         if (empty($slugs)) {
             $this->warn('No movie slugs found. Exiting...');
             return;
         }
 
-        $batch = Bus::batch([])->dispatch();
+        $totalMovies = count($slugs);
+        $jobs = [];
+
         foreach ($slugs as $slug) {
-            try {
-                $batch->add(new CrawlMovieJob($slug));
-                $this->info("Job dispatched for slug: {$slug}");
-            } catch (\Exception $e) {
-                $this->error("Failed to dispatch job for slug: {$slug}. Error: " . $e->getMessage());
-            }
+            $jobs[] = new CrawlMovieJob($slug);
         }
 
-        $this->info('All movies have been dispatched to the queue.');
+        if (!empty($jobs)) {
+            Bus::batch($jobs)->dispatch();
+            $this->info("Dispatched " . count($jobs) . " jobs to the queue.");
+        }
+
+        $this->info("Queue worker started!");
+        exec('php artisan queue:work -vv --stop-when-empty');
+        $this->info("Queue process completed!");
+
+        $this->successCount = Cache::get('successful_jobs_count', 0);
+        $successRate = ($totalMovies > 0) ? ($this->successCount / $totalMovies) * 100 : 0;
+
+        CommonService::getModel('CrawlMovieLog')->upsert([
+            [
+                'date' => Carbon::now(),
+                'total_movies' => $totalMovies,
+                'success' => $this->successCount,
+                'failed' => $this->failedCount,
+                'success_rate' => $successRate
+            ]
+        ], ['date'], ['total_movies', 'success', 'failed', 'success_rate']);
+
+        $this->info('Crawling process completed.');
+
+        $fileName = 'crawl_movie_log_' . Carbon::now()->format('Ymd_His') . '.xlsx';
+        Excel::store(new CrawlerExport(app(CrawlMovieLog::class)), $fileName, 'local');
+
+        $this->info("Exported Excel report: $fileName");
     }
 
     /**
