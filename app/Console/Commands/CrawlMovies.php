@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Exports\CrawlerExport;
 use App\Jobs\CrawlMovieJob;
+use App\Models\CrawlMovieLog;
 use App\Services\CrawlerService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -13,7 +15,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CrawlMovies extends Command
 {
@@ -61,13 +65,6 @@ class CrawlMovies extends Command
         foreach ($slugs as $slug) {
             $jobs[] = new CrawlMovieJob($slug);
         }
-        Queue::after(function (JobProcessed $event) {
-            echo "Processing job for movie: {$event->job->getJobId()}\n";
-        });
-    
-        Queue::failing(function (JobFailed $event) {
-            Log::error("Job {$event->job->getJobId()} failed with error: " . $event->exception->getMessage());
-        });
 
         if (!empty($jobs)) {
             Bus::batch($jobs)->dispatch();
@@ -78,6 +75,7 @@ class CrawlMovies extends Command
         exec('php artisan queue:work -vv --stop-when-empty');
         $this->info("Queue process completed!");
 
+        $this->successCount = Cache::get('successful_jobs_count', 0);
         $successRate = ($totalMovies > 0) ? ($this->successCount / $totalMovies) * 100 : 0;
 
         CommonService::getModel('CrawlMovieLog')->upsert([
@@ -91,6 +89,11 @@ class CrawlMovies extends Command
         ], ['date'], ['total_movies', 'success', 'failed', 'success_rate']);
 
         $this->info('Crawling process completed.');
+
+        $fileName = 'crawl_movie_log_' . Carbon::now()->format('Ymd_His') . '.xlsx';
+        Excel::store(new CrawlerExport(app(CrawlMovieLog::class)), $fileName, 'local');
+
+        $this->info("Exported Excel report: $fileName");
     }
 
     /**

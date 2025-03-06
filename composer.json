@@ -10,11 +10,7 @@
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
-<<<<<<< HEAD
-        "maatwebsite/excel": "^3.1",
-=======
         "maatwebsite/excel": "*",
->>>>>>> 8dfe80a9fdeba30b2f094ca65c768d67950c5631
         "monolog/monolog": "^3.8",
         "symfony/dom-crawler": "^7.2",
         "symfony/http-foundation": "^6.4"
