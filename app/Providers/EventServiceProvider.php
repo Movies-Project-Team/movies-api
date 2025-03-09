@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Events\SendOtpEvent;
 use App\Events\VerifyUserEvent;
+use App\Listeners\JobProcessedListener;
 use App\Listeners\SendOtpListener;
 use App\Listeners\VerifyUserListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
@@ -28,6 +30,9 @@ class EventServiceProvider extends ServiceProvider
         VerifyUserEvent::class => [
             VerifyUserListener::class,
         ],
+        JobProcessed::class => [
+            JobProcessedListener::class,
+        ],
     ];
 
     /**
@@ -45,4 +50,6 @@ class EventServiceProvider extends ServiceProvider
     {
         return false;
     }
+
+    
 }
