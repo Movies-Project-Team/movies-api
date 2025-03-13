@@ -11,11 +11,14 @@ use App\Http\Requests\Client\VerifyOTPUserRequest;
 use App\Services\CommonService;
 use App\Support\Constants;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function register(AuthRequest $request){
+        DB::beginTransaction();
+        
         try {
             $data = $request->all();
 
@@ -28,8 +31,10 @@ class AuthController extends Controller
             // send otp
             event(new SendOtpEvent($user));
 
+            DB::commit();
             return $this->sendResponseApi(['data' => $user, 'code' => 200, 'token' => $token]);
         } catch (\Exception $e) {
+            DB::rollBack();
 
             return $this->sendResponseApi(['error' => $e->getMessage(), 'code' => 500]);
         }

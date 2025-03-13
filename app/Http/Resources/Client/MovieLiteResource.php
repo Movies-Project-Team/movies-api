@@ -5,7 +5,7 @@ namespace App\Http\Resources\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MovieResource extends JsonResource
+class MovieLiteResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,14 +18,9 @@ class MovieResource extends JsonResource
             'id' => (int) $this->id,
             'title' => $this->title,
             'name' => $this->name,
-            'description' => $this->description,
-            'produce_by' => $this->produce_by,
             'season' => $this->season,
             'lang' => $this->lang,
             'esp_total' => $this->esp_total,
-            'esp_current' => $this->esp_current,
-            'imdb' => $this->IMDb,
-            'type' => $this->type, 
             'year' => $this->year,
             'slug' => $this->slug,
             'thumbnail' => $this->thumbnail,

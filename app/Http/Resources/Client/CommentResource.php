@@ -18,6 +18,8 @@ class CommentResource extends JsonResource
             'id' => (int) $this->id,
             'content' => $this->content,
             'status' => $this->is_approved,
+            'parent' => new CommentResource($this->parent),
+            'user' => new ProfileResource($this->user),
             'created_at' => $this->created_at->diffForHumans(),
             'replies' => CommentResource::collection($this->whenLoaded('replies')),
         ];

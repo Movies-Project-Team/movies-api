@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Client\MovieLiteResource;
 use App\Http\Resources\Client\MovieResource;
 use App\Services\CommonService;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class MovieController extends Controller
                 'keyword' => $keyword,
             ]);
     
-            return $this->getListPaginate(MovieResource::collection($data));
+            return $this->getListPaginate(MovieLiteResource::collection($data));
         } catch (\Exception $e) {
             Log::error('Error in getList method', ['message' => $e->getMessage()]);
     

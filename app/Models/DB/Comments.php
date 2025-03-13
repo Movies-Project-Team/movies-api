@@ -26,4 +26,9 @@ class Comments extends Model
     {
         return $this->belongsTo(Profile::class, 'user_id', 'user_id');
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(Comments::class, 'parent_id');
+    }
 }

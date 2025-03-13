@@ -14,7 +14,7 @@ class CommentController extends Controller
     public function list($movieId)
     {
         try {
-            $data = CommonService::getModel('Comments')->getList(1);
+            $data = CommonService::getModel('Comments')->getList($movieId);
             
             return $this->sendResponseApi(['data' => CommentResource::collection($data), 'code' => 200]);
         } catch (\Exception $e) {
