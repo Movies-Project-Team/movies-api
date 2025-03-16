@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,5 +41,33 @@ class Controller extends BaseController
         }
 
         return response()->json($params, $params['code']);
+    }
+
+    public function getListPaginate(ResourceCollection $data) {
+        return $this->sendResponseApi([
+            'data' => $data,
+            'paginate' => [
+                'totalItems' => $data->total(),
+                'currentPage' => $data->currentPage(),
+                'totalPages' => $data->total() ? $data->lastPage() : 0,
+                'totalItemsPerPage' => $data->perPage(),
+            ]
+        ]);
+    }
+
+    public function getDetailData(JsonResource $data)
+    {
+        return $this->sendResponseApi([
+            'data' => $data
+        ]);
+    }
+
+
+    public function sendErrorApi($message)
+    {
+        return response()->json([
+            'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            'message' => $message,
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

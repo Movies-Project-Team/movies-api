@@ -81,7 +81,7 @@ class ProfileController extends Controller
                 return $this->sendResponseApi(['message' => 'Profile not found', 'code' => 404]);
             }
 
-            return $this->sendResponseApi(['message' => 'Password is correct', 'code' => 200]);
+            return $this->sendResponseApi(['data' => $profile, 'message' => 'Password is correct', 'code' => 200]);
         } catch (\Exception $e) {
             return $this->sendResponseApi(['error' => $e->getMessage(), 'code' => 500]);
         }
