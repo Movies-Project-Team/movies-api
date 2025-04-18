@@ -4,7 +4,6 @@ namespace App\Models\DB;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -42,7 +41,6 @@ class Movies extends Model
         return $this->hasMany(Episodes::class, 'movie_id');
     }
 
-    
     public function actors(): BelongsToMany
     {
         return $this->belongsToMany(Actors::class, 'movie_actor', 'movie_id', 'actor_id');

@@ -228,19 +228,19 @@ abstract class BaseRepository
         return $this->_db->where($attributes)->first();
     }
 
-    public function upsert(array $data, array $uniqueColumns, array $updateColumns)
+    public function upsert( array $uniqueColumns, array $updateColumns)
     {
-        // $data = $this->findByAttributes($attributes);
+        $data = $this->findByAttributes($uniqueColumns);
 
-        // if ($data) {
-        //     $data->update($options);
-        // } else {
-        //     $data = $this->_db->create($options);
-        // }
+        if ($data) {
+            $data->update($updateColumns);
+        } else {
+            $data = $this->_db->create($updateColumns);
+        }
 
-        // return $data;
+        return $data;
         /////////////////////////////////////////////////
-        return $this->_db->upsert($data, $uniqueColumns, $updateColumns);
+        // return $this->_db->upsert($data, $uniqueColumns, $updateColumns);
     }
 
     public function createOrPass($attributes, $options = [])
